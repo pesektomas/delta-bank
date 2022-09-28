@@ -1,6 +1,10 @@
 package org.delta.account;
 
+import org.delta.card.BaseCard;
 import org.delta.person.Person;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Acount types:
@@ -29,6 +33,8 @@ public class BaseAccount {
 
     private float balance;
 
+    private List<BaseCard> cards = new LinkedList<>();
+
     public BaseAccount(Person owner, float balance) {
         this.owner = owner;
         this.balance = balance;
@@ -48,5 +54,13 @@ public class BaseAccount {
 
     public float getBalance() {
         return balance;
+    }
+
+    public void addCard(BaseCard card) {
+        this.cards.add(card);
+    }
+
+    public int getCardCount() {
+        return this.cards.size();
     }
 }

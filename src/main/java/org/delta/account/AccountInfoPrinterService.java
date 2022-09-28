@@ -6,7 +6,7 @@ import javax.inject.Singleton;
 public class AccountInfoPrinterService {
 
     public void printAccountInfo(BaseAccount account) {
-        System.out.println(this.getTypePrefix(account) + "Balance of " + account.getOwner().getFullName() + " account is " + account.getBalance());
+        System.out.println(this.getTypePrefix(account) + "Balance of " + account.getOwner().getFullName() + " account is " + account.getBalance() + ", number of cards: " + account.getCardCount());
     }
 
     private String getTypePrefix(BaseAccount account) {

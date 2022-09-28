@@ -3,15 +3,18 @@ package org.delta;
 import org.delta.account.*;
 import org.delta.action.ActionListener;
 import org.delta.action.HelpAction;
+import org.delta.card.CardCreatorService;
 import org.delta.menu.Menu;
 import org.delta.menu.MenuChoices;
 import org.delta.person.Person;
+import org.delta.person.PersonFactory;
 
 import javax.inject.Inject;
 
 public class Bank {
 
-    final private ActionListener actionListener;
+    @Inject
+    private ActionListener actionListener;
 
     @Inject
     private AccountInfoPrinterService accountInfoPrinterService;
@@ -22,8 +25,17 @@ public class Bank {
     @Inject
     private InterestRunnerService interestRunnerService;
 
-    public Bank() {
-        this.actionListener = new ActionListener();
+    @Inject
+    private PersonFactory personFactory;
+
+    @Inject
+    private AccountFactory accountFactory;
+
+    @Inject
+    private CardCreatorService cardCreatorService;
+
+    @Inject
+    public Bank(AccountInfoPrinterService accountInfoPrinterService) {
         this.registerActions();
     }
 
@@ -55,11 +67,11 @@ public class Bank {
 
     public void example() {
 
-        Person owner = new Person("Tomas", "Pesek");
+        Person owner = this.personFactory.createPerson("Tomas", "Pesek");
 
-        BaseAccount accountOne = new StudentAccount(owner, 1000);
-        BaseAccount accountTwo = new BaseAccount(owner, 5000);
-        BaseAccount accountThree = new SavingAccount(owner, 10000);
+        BaseAccount accountOne = this.accountFactory.createStudentAccount(owner, 1000);
+        BaseAccount accountTwo = this.accountFactory.createBaseAccount(owner, 5000);
+        BaseAccount accountThree = this.accountFactory.createSavingAccount(owner, 10000);
 
         this.accountInfoPrinterService.printAccountInfo(accountOne);
         this.accountInfoPrinterService.printAccountInfo(accountTwo);
@@ -83,6 +95,8 @@ public class Bank {
         this.accountInfoPrinterService.printAccountInfo(accountTwo);
         this.accountInfoPrinterService.printAccountInfo(accountThree);
         System.out.println();
-    }
 
+        this.cardCreatorService.createCardAndSetIntoAccount(accountOne);
+        this.accountInfoPrinterService.printAccountInfo(accountOne);
+    }
 }
