@@ -29,15 +29,22 @@ import java.util.List;
 
 public class BaseAccount {
 
+    private String accountNumber;
+
     private Person owner;
 
     private float balance;
 
     private List<BaseCard> cards = new LinkedList<>();
 
-    public BaseAccount(Person owner, float balance) {
+    public BaseAccount(String accountNumber, Person owner, float balance) {
+        this.accountNumber = accountNumber;
         this.owner = owner;
         this.balance = balance;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
     }
 
     public void addToBalance(float amount) {
@@ -62,5 +69,9 @@ public class BaseAccount {
 
     public int getCardCount() {
         return this.cards.size();
+    }
+
+    public BaseCard[] getCards() {
+        return this.cards.toArray(new BaseCard[0]);
     }
 }

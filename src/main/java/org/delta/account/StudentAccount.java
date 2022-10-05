@@ -6,8 +6,8 @@ public class StudentAccount extends BaseAccount implements AccountWithInterest {
 
     private boolean isActiveStudent;
 
-    public StudentAccount(Person owner, float balance) {
-        super(owner, balance);
+    public StudentAccount(String accountNumber, Person owner, float balance) {
+        super(accountNumber, owner, balance);
 
         this.isActiveStudent = true;
     }

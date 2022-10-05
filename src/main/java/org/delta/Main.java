@@ -2,6 +2,7 @@ package org.delta;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import org.delta.account.AccountTypeDoesNotExist;
 
 public class Main {
 
@@ -10,29 +11,14 @@ public class Main {
         Injector injector = Guice.createInjector(new BankInjector());
 
         Bank bank = injector.getInstance(Bank.class);
-        bank.example();
+        try {
+            bank.example();
+        } catch (AccountTypeDoesNotExist e) {
+            throw new RuntimeException(e);
+        }
 
         //Bank bank = new Bank();
         //bank.startTerminal();
         //bank.example();
-
-        /*
-        Gson gson = new Gson();
-        String json = gson.toJson(accountOne);
-
-        System.out.println(json);
-
-        try {
-            IO.writeFile("accounts.json", json);
-
-            String jsonFile = IO.readFile("accounts.json");
-            System.out.println(jsonFile);
-
-            BaseAccount readAccount = gson.fromJson(jsonFile, BaseAccount.class);
-            readAccount.printBalance();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        */
     }
 }

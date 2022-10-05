@@ -1,5 +1,6 @@
 package org.delta;
 
+import com.google.gson.Gson;
 import org.delta.account.*;
 import org.delta.action.ActionListener;
 import org.delta.action.HelpAction;
@@ -17,6 +18,9 @@ public class Bank {
     private ActionListener actionListener;
 
     @Inject
+    private AccountService accountService;
+
+    @Inject
     private AccountInfoPrinterService accountInfoPrinterService;
 
     @Inject
@@ -29,15 +33,7 @@ public class Bank {
     private PersonFactory personFactory;
 
     @Inject
-    private AccountFactory accountFactory;
-
-    @Inject
     private CardCreatorService cardCreatorService;
-
-    @Inject
-    public Bank(AccountInfoPrinterService accountInfoPrinterService) {
-        this.registerActions();
-    }
 
     public void registerActions() {
         this.actionListener.registerAction(MenuChoices.HELP, new HelpAction());
@@ -50,6 +46,7 @@ public class Bank {
 
     public void startTerminal() {
         System.out.println("Hello from bank application!");
+        this.registerActions();
 
         Menu menu = new Menu();
         menu.printMenu();
@@ -65,13 +62,13 @@ public class Bank {
         }
     }
 
-    public void example() {
+    public void example() throws AccountTypeDoesNotExist {
 
         Person owner = this.personFactory.createPerson("Tomas", "Pesek");
 
-        BaseAccount accountOne = this.accountFactory.createStudentAccount(owner, 1000);
-        BaseAccount accountTwo = this.accountFactory.createBaseAccount(owner, 5000);
-        BaseAccount accountThree = this.accountFactory.createSavingAccount(owner, 10000);
+        BaseAccount accountOne = this.accountService.createAccount(AccountType.BASE, owner, 1000);
+        BaseAccount accountTwo = this.accountService.createAccount(AccountType.STUDENT, owner, 5000);
+        BaseAccount accountThree = this.accountService.createAccount(AccountType.SAVING, owner, 10000);
 
         this.accountInfoPrinterService.printAccountInfo(accountOne);
         this.accountInfoPrinterService.printAccountInfo(accountTwo);
@@ -84,12 +81,7 @@ public class Bank {
         this.accountInfoPrinterService.printAccountInfo(accountTwo);
         System.out.println();
 
-        BaseAccount[] accounts = new BaseAccount[3];
-        accounts[0] = accountOne;
-        accounts[1] = accountTwo;
-        accounts[2] = accountThree;
-
-        interestRunnerService.run(accounts);
+        interestRunnerService.run();
 
         this.accountInfoPrinterService.printAccountInfo(accountOne);
         this.accountInfoPrinterService.printAccountInfo(accountTwo);
@@ -98,5 +90,24 @@ public class Bank {
 
         this.cardCreatorService.createCardAndSetIntoAccount(accountOne);
         this.accountInfoPrinterService.printAccountInfo(accountOne);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(owner);
+
+        System.out.println(json);
+
+        /*try {
+            IO.writeFile("accounts.json", json);
+
+            String jsonFile = IO.readFile("accounts.json");
+            System.out.println(jsonFile);
+
+            BaseAccount readAccount = gson.fromJson(jsonFile, BaseAccount.class);
+            //readAccount.printBalance();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }*/
+
+
     }
 }
