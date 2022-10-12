@@ -1,21 +1,35 @@
 package org.delta;
 
 import com.google.gson.Gson;
-import org.delta.account.*;
+import org.delta.account.AccountType;
+import org.delta.account.AccountTypeDoesNotExist;
+import org.delta.account.BaseAccount;
+import org.delta.account.interest.InterestRunnerService;
+import org.delta.account.serialization.AccountJsonSerializationObject;
+import org.delta.account.serialization.AccountJsonSerializationObjectFactory;
+import org.delta.account.services.AccountInfoPrinterService;
+import org.delta.account.services.AccountService;
+import org.delta.account.services.MoneyTransferService;
 import org.delta.action.ActionListener;
+import org.delta.action.ActionProcessService;
 import org.delta.action.HelpAction;
 import org.delta.card.CardCreatorService;
+import org.delta.io.IO;
 import org.delta.menu.Menu;
 import org.delta.menu.MenuChoices;
 import org.delta.person.Person;
 import org.delta.person.PersonFactory;
 
 import javax.inject.Inject;
+import java.io.IOException;
 
 public class Bank {
 
     @Inject
     private ActionListener actionListener;
+
+    @Inject
+    private ActionProcessService actionProcessService;
 
     @Inject
     private AccountService accountService;
@@ -35,6 +49,10 @@ public class Bank {
     @Inject
     private CardCreatorService cardCreatorService;
 
+    @Inject
+    private AccountJsonSerializationObjectFactory accountJsonSerializationObjectFactory;
+
+    @Deprecated
     public void registerActions() {
         this.actionListener.registerAction(MenuChoices.HELP, new HelpAction());
         this.actionListener.registerAction(MenuChoices.DETAIL, new HelpAction());
@@ -64,6 +82,8 @@ public class Bank {
 
     public void example() throws AccountTypeDoesNotExist {
 
+        //this.actionProcessService.processAction(MenuChoices.HELP);
+
         Person owner = this.personFactory.createPerson("Tomas", "Pesek");
 
         BaseAccount accountOne = this.accountService.createAccount(AccountType.BASE, owner, 1000);
@@ -91,22 +111,24 @@ public class Bank {
         this.cardCreatorService.createCardAndSetIntoAccount(accountOne);
         this.accountInfoPrinterService.printAccountInfo(accountOne);
 
+        AccountJsonSerializationObject accountJsonSerializationObjectOne = this.accountJsonSerializationObjectFactory.createFromBaseAccount(accountOne);
+
         Gson gson = new Gson();
-        String json = gson.toJson(owner);
+        String json = gson.toJson(accountJsonSerializationObjectOne);
 
         System.out.println(json);
 
-        /*try {
+        try {
             IO.writeFile("accounts.json", json);
 
             String jsonFile = IO.readFile("accounts.json");
             System.out.println(jsonFile);
 
-            BaseAccount readAccount = gson.fromJson(jsonFile, BaseAccount.class);
-            //readAccount.printBalance();
+            AccountJsonSerializationObject deserializedObject = gson.fromJson(jsonFile, AccountJsonSerializationObject.class);
+            System.out.println(deserializedObject.accountNumber);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }*/
+        }
 
 
     }

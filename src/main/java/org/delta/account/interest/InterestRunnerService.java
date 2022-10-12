@@ -1,4 +1,8 @@
-package org.delta.account;
+package org.delta.account.interest;
+
+import org.delta.account.AccountWithInterest;
+import org.delta.account.BaseAccount;
+import org.delta.account.services.AccountService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

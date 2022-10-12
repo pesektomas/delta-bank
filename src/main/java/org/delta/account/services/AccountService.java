@@ -1,6 +1,11 @@
-package org.delta.account;
+package org.delta.account.services;
 
+import org.delta.account.AccountFactory;
+import org.delta.account.AccountType;
+import org.delta.account.AccountTypeDoesNotExist;
+import org.delta.account.BaseAccount;
 import org.delta.person.Person;
+import org.delta.person.PersonFactory;
 import org.delta.utils.AccountNumberGeneratorService;
 
 import javax.inject.Inject;
@@ -17,6 +22,9 @@ public class AccountService {
 
     @Inject
     private AccountNumberGeneratorService accountNumberGeneratorService;
+
+    @Inject
+    private PersonFactory personFactory;
 
     public void addAccount(BaseAccount account) {
         this.accounts.add(account);

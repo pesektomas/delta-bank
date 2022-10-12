@@ -1,4 +1,6 @@
-package org.delta.account;
+package org.delta.account.services;
+
+import org.delta.account.BaseAccount;
 
 import javax.inject.Singleton;
 

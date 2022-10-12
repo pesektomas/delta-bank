@@ -2,11 +2,10 @@ package org.delta.action;
 
 import org.delta.menu.MenuChoices;
 
-import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 
-@Singleton
+@Deprecated
 public class ActionListener {
 
     final private Map<MenuChoices, Action> registeredActions;

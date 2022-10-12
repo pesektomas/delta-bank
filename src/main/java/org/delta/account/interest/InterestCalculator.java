@@ -1,4 +1,7 @@
-package org.delta.account;
+package org.delta.account.interest;
+
+import org.delta.account.AccountWithInterest;
+import org.delta.account.BaseAccount;
 
 public class InterestCalculator {
 
