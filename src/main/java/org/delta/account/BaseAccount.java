@@ -3,8 +3,8 @@ package org.delta.account;
 import org.delta.card.BaseCard;
 import org.delta.person.Person;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Acount types:
@@ -35,7 +35,7 @@ public class BaseAccount {
 
     private float balance;
 
-    private List<BaseCard> cards = new LinkedList<>();
+    private Map<String, BaseCard> cards = new HashMap<>();
 
     public BaseAccount(String accountNumber, Person owner, float balance) {
         this.accountNumber = accountNumber;
@@ -64,7 +64,7 @@ public class BaseAccount {
     }
 
     public void addCard(BaseCard card) {
-        this.cards.add(card);
+        this.cards.put(card.getCardNumber(), card);
     }
 
     public int getCardCount() {
@@ -72,7 +72,6 @@ public class BaseAccount {
     }
 
     public BaseCard[] getCards() {
-        return this.cards.toArray(new BaseCard[0]);
+        return this.cards.values().toArray(new BaseCard[0]);
     }
-
 }

@@ -1,17 +1,13 @@
-package org.delta.menu;
+package org.delta.ui.cli.menu;
 
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class Menu {
 
-    public void printMenu() {
-        MenuChoices.help();
-    }
-
     public MenuChoices read() {
         try {
-            System.out.print("What do you want: ");
+            System.out.print("What do you want (1 is help): ");
             Scanner scanner = new Scanner(new InputStreamReader(System.in));
             int menuInput = scanner.nextInt();
             System.out.println("Your choice: " + menuInput);
@@ -22,8 +18,19 @@ public class Menu {
 
             return MenuChoices.INVALID_CHOICE;
         }
-
-
     }
 
+    public String simpleRead() {
+        try {
+            System.out.print("What do you want: ");
+            Scanner scanner = new Scanner(new InputStreamReader(System.in));
+            String input = scanner.next();
+
+            return input;
+        } catch (Exception exception) {
+            System.out.println("Input is not valid");
+
+            return "";
+        }
+    }
 }

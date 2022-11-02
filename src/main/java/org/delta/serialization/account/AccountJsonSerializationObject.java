@@ -1,9 +1,9 @@
-package org.delta.account.serialization;
+package org.delta.serialization.account;
 
 import com.google.gson.annotations.SerializedName;
 import org.delta.account.AccountType;
 import org.delta.card.serialization.CartJsonSerializationObject;
-import org.delta.person.serialization.PersonJsonSerializationObject;
+import org.delta.serialization.person.PersonJsonSerializationObject;
 
 public class AccountJsonSerializationObject {
 

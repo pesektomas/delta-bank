@@ -1,9 +1,9 @@
-package org.delta.account.serialization;
+package org.delta.serialization.account;
 
 import org.delta.account.AccountType;
 import org.delta.account.BaseAccount;
 import org.delta.card.serialization.CartJsonSerializationObjectFactory;
-import org.delta.person.serialization.PersonJsonSerializationObjectFactory;
+import org.delta.serialization.person.PersonJsonSerializationObjectFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

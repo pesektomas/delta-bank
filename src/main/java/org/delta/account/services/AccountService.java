@@ -5,18 +5,20 @@ import org.delta.account.AccountType;
 import org.delta.account.AccountTypeDoesNotExist;
 import org.delta.account.BaseAccount;
 import org.delta.person.Person;
-import org.delta.person.PersonFactory;
+import org.delta.person.PersonService;
+import org.delta.serialization.account.AccountJsonSerializationObject;
 import org.delta.utils.AccountNumberGeneratorService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Singleton
 public class AccountService {
 
-    private final List<BaseAccount> accounts = new LinkedList<>();
+    private final Map<String, BaseAccount> accounts = new HashMap();
+
     @Inject
     private AccountFactory accountFactory;
 
@@ -24,20 +26,14 @@ public class AccountService {
     private AccountNumberGeneratorService accountNumberGeneratorService;
 
     @Inject
-    private PersonFactory personFactory;
+    private PersonService personService;
 
     public void addAccount(BaseAccount account) {
-        this.accounts.add(account);
+        this.accounts.put(account.getAccountNumber(), account);
     }
 
-    public BaseAccount findAccount(String accountNumber) {
-        for (BaseAccount account : this.accounts) {
-            if (account.getAccountNumber().equals(accountNumber)) {
-                return account;
-            }
-        }
-
-        return null;
+    public BaseAccount findByAccountNumber(String accountNumber) {
+        return this.accounts.get(accountNumber);
     }
 
     public BaseAccount createAccount(AccountType accountType, Person person, float balance) throws AccountTypeDoesNotExist {
@@ -60,6 +56,29 @@ public class AccountService {
     }
 
     public BaseAccount[] getAccounts() {
-        return this.accounts.toArray(new BaseAccount[0]);
+        return this.accounts.values().toArray(new BaseAccount[0]);
+    }
+
+    public BaseAccount createAccount(AccountJsonSerializationObject accountJsonSerializationObject) throws AccountTypeDoesNotExist {
+
+        Person person = this.personService.findPersonById(accountJsonSerializationObject.personJsonSerializationObject.id);
+
+        System.out.println(person.getId());
+        System.out.println(person.getFullName());
+
+        BaseAccount account = switch (accountJsonSerializationObject.accountType) {
+            case BASE -> this.accountFactory.createBaseAccount(accountJsonSerializationObject, person);
+            case STUDENT -> this.accountFactory.createStudentAccount(accountJsonSerializationObject, person);
+            case SAVING -> this.accountFactory.createSavingAccount(accountJsonSerializationObject, person);
+        };
+
+        if (account == null) {
+            throw new AccountTypeDoesNotExist();
+        }
+
+        this.addAccount(account);
+
+        return account;
+
     }
 }

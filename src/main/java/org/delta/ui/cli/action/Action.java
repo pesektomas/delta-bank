@@ -1,4 +1,4 @@
-package org.delta.action;
+package org.delta.ui.cli.action;
 
 public interface Action {
 

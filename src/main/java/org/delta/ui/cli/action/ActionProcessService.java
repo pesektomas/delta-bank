@@ -1,6 +1,6 @@
-package org.delta.action;
+package org.delta.ui.cli.action;
 
-import org.delta.menu.MenuChoices;
+import org.delta.ui.cli.menu.MenuChoices;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -19,5 +19,4 @@ public class ActionProcessService {
             action.processAction();
         }
     }
-
 }

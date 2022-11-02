@@ -1,4 +1,4 @@
-package org.delta.io;
+package org.delta.utils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

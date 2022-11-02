@@ -1,90 +1,37 @@
 package org.delta;
 
-import com.google.gson.Gson;
-import org.delta.account.AccountType;
 import org.delta.account.AccountTypeDoesNotExist;
-import org.delta.account.BaseAccount;
-import org.delta.account.interest.InterestRunnerService;
-import org.delta.account.serialization.AccountJsonSerializationObject;
-import org.delta.account.serialization.AccountJsonSerializationObjectFactory;
-import org.delta.account.services.AccountInfoPrinterService;
-import org.delta.account.services.AccountService;
-import org.delta.account.services.MoneyTransferService;
-import org.delta.action.ActionListener;
-import org.delta.action.ActionProcessService;
-import org.delta.action.HelpAction;
-import org.delta.card.CardCreatorService;
-import org.delta.io.IO;
-import org.delta.menu.Menu;
-import org.delta.menu.MenuChoices;
-import org.delta.person.Person;
-import org.delta.person.PersonFactory;
+import org.delta.ui.cli.action.ActionProcessService;
+import org.delta.ui.cli.menu.Menu;
+import org.delta.ui.cli.menu.MenuChoices;
 
 import javax.inject.Inject;
-import java.io.IOException;
 
 public class Bank {
 
     @Inject
-    private ActionListener actionListener;
-
-    @Inject
     private ActionProcessService actionProcessService;
-
-    @Inject
-    private AccountService accountService;
-
-    @Inject
-    private AccountInfoPrinterService accountInfoPrinterService;
-
-    @Inject
-    private MoneyTransferService moneyTransferService;
-
-    @Inject
-    private InterestRunnerService interestRunnerService;
-
-    @Inject
-    private PersonFactory personFactory;
-
-    @Inject
-    private CardCreatorService cardCreatorService;
-
-    @Inject
-    private AccountJsonSerializationObjectFactory accountJsonSerializationObjectFactory;
-
-    @Deprecated
-    public void registerActions() {
-        this.actionListener.registerAction(MenuChoices.HELP, new HelpAction());
-        this.actionListener.registerAction(MenuChoices.DETAIL, new HelpAction());
-        this.actionListener.registerAction(MenuChoices.ACCOUNTS, new HelpAction());
-        this.actionListener.registerAction(MenuChoices.CREDIT, new HelpAction());
-        this.actionListener.registerAction(MenuChoices.SAVING, new HelpAction());
-        this.actionListener.registerAction(MenuChoices.INVALID_CHOICE, new HelpAction());
-    }
 
     public void startTerminal() {
         System.out.println("Hello from bank application!");
-        this.registerActions();
 
         Menu menu = new Menu();
-        menu.printMenu();
+        //menu.printMenu();
 
         while (true) {
             MenuChoices choice = menu.read();
-
             if (choice == MenuChoices.EXIT) {
                 break;
             }
 
-            this.actionListener.processAction(choice);
+            this.actionProcessService.processAction(choice);
         }
     }
 
     public void example() throws AccountTypeDoesNotExist {
 
-        //this.actionProcessService.processAction(MenuChoices.HELP);
 
-        Person owner = this.personFactory.createPerson("Tomas", "Pesek");
+        /*Person owner = this.personService.createPerson("1", "Tomas", "Pesek");
 
         BaseAccount accountOne = this.accountService.createAccount(AccountType.BASE, owner, 1000);
         BaseAccount accountTwo = this.accountService.createAccount(AccountType.STUDENT, owner, 5000);
@@ -111,25 +58,7 @@ public class Bank {
         this.cardCreatorService.createCardAndSetIntoAccount(accountOne);
         this.accountInfoPrinterService.printAccountInfo(accountOne);
 
-        AccountJsonSerializationObject accountJsonSerializationObjectOne = this.accountJsonSerializationObjectFactory.createFromBaseAccount(accountOne);
-
-        Gson gson = new Gson();
-        String json = gson.toJson(accountJsonSerializationObjectOne);
-
-        System.out.println(json);
-
-        try {
-            IO.writeFile("accounts.json", json);
-
-            String jsonFile = IO.readFile("accounts.json");
-            System.out.println(jsonFile);
-
-            AccountJsonSerializationObject deserializedObject = gson.fromJson(jsonFile, AccountJsonSerializationObject.class);
-            System.out.println(deserializedObject.accountNumber);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        this.bankJsonSerializationService.saveBank();*/
 
     }
 }
