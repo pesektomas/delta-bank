@@ -9,6 +9,9 @@ import java.util.Collections;
 
 public class IO {
 
+    private IO() {
+    }
+
     public static void writeFile(String fileName, String content) throws IOException {
         Path file = Paths.get(fileName);
         Files.write(file, Collections.singleton(content), StandardCharsets.UTF_8);

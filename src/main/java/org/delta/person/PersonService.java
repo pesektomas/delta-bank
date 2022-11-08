@@ -1,5 +1,8 @@
 package org.delta.person;
 
+import com.google.common.eventbus.EventBus;
+import org.delta.notification.account.NotificationData;
+import org.delta.notification.account.NotifyCustomerEvent;
 import org.delta.serialization.person.PersonJsonSerializationObject;
 
 import javax.inject.Inject;
@@ -15,6 +18,9 @@ public class PersonService {
     @Inject
     private PersonFactory personFactory;
 
+    @Inject
+    private EventBus eventBus;
+
     public Person createPerson(String id, String name, String lastName) {
         Person person = this.personFactory.createPerson(id, name, lastName);
 
@@ -27,6 +33,7 @@ public class PersonService {
         Person person = this.personFactory.createPerson(personJsonSerializationObject);
 
         this.persons.put(person.getId(), person);
+        this.eventBus.post(new NotifyCustomerEvent(new NotificationData("test")));
 
         return person;
     }

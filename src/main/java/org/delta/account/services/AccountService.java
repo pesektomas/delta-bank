@@ -1,9 +1,12 @@
 package org.delta.account.services;
 
+import com.google.common.eventbus.EventBus;
 import org.delta.account.AccountFactory;
 import org.delta.account.AccountType;
 import org.delta.account.AccountTypeDoesNotExist;
 import org.delta.account.BaseAccount;
+import org.delta.notification.account.NotificationData;
+import org.delta.notification.account.NotifyCustomerEvent;
 import org.delta.person.Person;
 import org.delta.person.PersonService;
 import org.delta.serialization.account.AccountJsonSerializationObject;
@@ -27,6 +30,9 @@ public class AccountService {
 
     @Inject
     private PersonService personService;
+
+    @Inject
+    private EventBus eventBus;
 
     public void addAccount(BaseAccount account) {
         this.accounts.put(account.getAccountNumber(), account);
@@ -77,6 +83,9 @@ public class AccountService {
         }
 
         this.addAccount(account);
+
+        System.out.println("test?");
+        this.eventBus.post(new NotifyCustomerEvent(new NotificationData("test")));
 
         return account;
 
