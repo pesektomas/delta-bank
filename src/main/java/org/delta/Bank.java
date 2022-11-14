@@ -12,8 +12,13 @@ public class Bank {
     @Inject
     private ActionProcessService actionProcessService;
 
+    @Inject
+    private QuartzScheduler quartzScheduler;
+
     public void startTerminal() {
         System.out.println("Hello from bank application!");
+
+        quartzScheduler.registerJobs();
 
         Menu menu = new Menu();
         //menu.printMenu();
@@ -21,6 +26,7 @@ public class Bank {
         while (true) {
             MenuChoices choice = menu.read();
             if (choice == MenuChoices.EXIT) {
+                // quartzScheduler.cancel
                 break;
             }
 

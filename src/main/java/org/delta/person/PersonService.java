@@ -1,8 +1,8 @@
 package org.delta.person;
 
 import com.google.common.eventbus.EventBus;
-import org.delta.notification.account.NotificationData;
-import org.delta.notification.account.NotifyCustomerEvent;
+import org.delta.notification.persons.NotificationData;
+import org.delta.notification.persons.NotifyCustomerEvent;
 import org.delta.serialization.person.PersonJsonSerializationObject;
 
 import javax.inject.Inject;

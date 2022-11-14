@@ -1,4 +1,4 @@
-package org.delta.notification.account;
+package org.delta.notification.persons;
 
 import com.google.common.eventbus.Subscribe;
 

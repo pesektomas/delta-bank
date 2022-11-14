@@ -1,4 +1,4 @@
-package org.delta.notification.account;
+package org.delta.notification.persons;
 
 public class NotifyCustomerEvent {
 

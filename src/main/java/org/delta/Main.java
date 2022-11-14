@@ -2,7 +2,7 @@ package org.delta;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import org.delta.notification.account.NotifyCustomerEventListener;
+import org.delta.notification.persons.NotifyCustomerEventListener;
 
 public class Main {
 
